@@ -15,6 +15,14 @@ io.on("connection", (socket) => {
     console.log("A user disconnect");
   })
   
+  socket.on('ai-message',async(data)=>{
+    console.log("Ai message received:", data);
+
+    const gen = await generateResponse(data.prompt)
+
+    console.log("",gen);
+    
+  })
 });
 
 
