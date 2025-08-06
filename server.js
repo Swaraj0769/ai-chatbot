@@ -21,6 +21,8 @@ io.on("connection", (socket) => {
     const gen = await generateResponse(data.prompt)
 
     console.log("",gen);
+
+    socket.emit('ai-message-listen', )
     
   })
 });

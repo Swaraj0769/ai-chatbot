@@ -11,7 +11,7 @@ io.on("connection", (socket) => {
 ```
 
 **Disconnect**
-```
+```javascript
 io.on("connection", (socket) => {
 
   socket.on("disconnect", ()=>{
@@ -26,7 +26,7 @@ io.on("connection", (socket) => {
 ## Description
 This event is triggered when a custom event occurs. It can be used to handle specific actions or to respond to user interactions that are not covered by the default events.
 
-```
+```javascript
 socket.on("kiwi", (data)=>{
     console.log(data);
     // console.log("Message Received");
