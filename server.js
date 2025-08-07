@@ -28,11 +28,16 @@ io.on("connection", (socket) => {
       }]
     })
 
-    const gen = await generateResponse(chatHistory)
+    const generated = await generateResponse(chatHistory)
 
+    chatHistory.push({
+      role:"model",
+      parts: [{
+        text: generated
+      }]
+    })
     
-    
-    socket.emit("ai-message-response", gen)   
+    socket.emit("ai-message-response", generated)   
   })
 });
 
