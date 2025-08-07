@@ -4,13 +4,16 @@ import './App.css'
 
 function App() {
   const [socket, setSocket] = useState(null)
-  const [message, setMessage] = useState('')
-  const [conversations, setConversations] = useState([])
+  const [message, setMessage] = useState([])
+  const [conversations, setConversations] = useState('')
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (message.trim()) {
       setConversations([...conversations, { text: message, sender: 'user' }])
+      
+      socket.emit('ai-message', message)
+
       setMessage('')
     }
   }
@@ -18,6 +21,10 @@ function App() {
   useEffect(() => {
     let socketInstance = io("http://localhost:3000");
     setSocket(socketInstance)
+
+    socketInstance.on("ai-message-response", (response) => {
+      
+    })
   }, [])
 
   return (
@@ -35,7 +42,7 @@ function App() {
             <div className="message-content">
               <div className="message-sender">{msg.sender === 'user' ? 'You' : 'ChatBot'}</div>
               {msg.text}
-              <div className="message-time">{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+              <div className="message-time">{new Date().toLocaleTimeString([])}</div>
             </div>
           </div>
         ))}

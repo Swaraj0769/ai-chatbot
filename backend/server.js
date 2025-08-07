@@ -6,7 +6,15 @@ const { Server } = require("socket.io");
 const generateResponse = require('./src/services/ai.service')
 
 const httpServer = createServer(app);
-const io = new Server(httpServer, { /* options */ });
+const io = new Server(httpServer, {
+    cors:{
+      origin: "http://localhost:5173",
+      // methods: ["GET", "POST"],
+      // allowedHeaders: ["Content-Type"], 
+      // credentials: true,
+      // transports: ["websocket", "polling"],
+    }
+ });
 
 const chatHistory = [ ]
 
