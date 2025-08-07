@@ -8,6 +8,8 @@ const generateResponse = require('./src/services/ai.service')
 const httpServer = createServer(app);
 const io = new Server(httpServer, { /* options */ });
 
+const chatHistory = []
+
 io.on("connection", (socket) => {
   console.log("A user Connected");
 
@@ -15,15 +17,22 @@ io.on("connection", (socket) => {
     console.log("A user disconnect");
   })
   
-  socket.on('ai-message',async(data)=>{
+  /* ai-message */
+  socket.on('ai-message', async (data)=>{
     console.log("Ai message received:", data);
 
-    const gen = await generateResponse(data.prompt)
+    chatHistory.push({
+      role:"user",
+      parts: [{
+        text: data
+      }]
+    })
 
-    console.log("",gen);
+    const gen = await generateResponse(chatHistory)
 
-    socket.emit('ai-message-listen', )
+    console.log("res:",gen);
     
+    socket.emit("ai-message-response", gen)   
   })
 });
 

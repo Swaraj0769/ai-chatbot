@@ -58,3 +58,29 @@ it import and used in server.js file
 ```javascript
 const generateResponse = require('./src/services/ai.service')
 ```
+
+# Socket.IO Service -
+## Description
+This service manages the Socket.IO connection. It can be used to handle real-time communication between the server and clients.
+
+
+# short term memory -
+maintain it like this in server.js file
+```javascript
+const chatHistory = [
+  {
+    role: "user",
+    parts: [{ text: "who was the PM of india in 2019"}]        //this is user input
+  },
+  {
+    role: "model",
+    parts: [
+      {
+        text: "the PM of india in 2019 was narendra modi."     // this is AI response
+      }
+    ]
+  }
+]
+```
+
+now,it remembers the last user input and AI response, and you can add more entries to this array as the conversation continues. 
