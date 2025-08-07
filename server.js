@@ -8,7 +8,7 @@ const generateResponse = require('./src/services/ai.service')
 const httpServer = createServer(app);
 const io = new Server(httpServer, { /* options */ });
 
-const chatHistory = []
+const chatHistory = [ ]
 
 io.on("connection", (socket) => {
   console.log("A user Connected");
@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
 
     const gen = await generateResponse(chatHistory)
 
-    console.log("res:",gen);
+    
     
     socket.emit("ai-message-response", gen)   
   })
