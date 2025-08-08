@@ -16,8 +16,9 @@ function App() {
       timestamp: new Date().toLocaleTimeString(),
       sender: 'user'
     }
-
-    setMessages([...message, newMessage])
+    
+    setMessages(prevMessages => [...prevMessages, userMessage])
+    socket.emit('ai-message', inputText)
     setInputText('')
 
     // setTimeout(() => {
@@ -29,6 +30,7 @@ function App() {
     //   }
     //   setMessages(prevMessages => [...prevMessages, botMessage])
     // }, 1000)
+
   }
 
 
@@ -43,16 +45,16 @@ function App() {
     }
   }
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault()
-  //   if (message.trim()) {
-  //     setinputText([...inputText, { text: message, sender: 'user' }])
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (message.trim()) {
+      setinputText([...inputText, { text: message, sender: 'user' }])
       
-  //     socket.emit('ai-message', message)
+      socket.emit('ai-message', message)
 
-  //     setMessage('')
-  //   }
-  // }
+      setMessage('')
+    }
+  }
 
   useEffect(() => {
     let socketInstance = io("http://localhost:3000");
