@@ -4,19 +4,55 @@ import './App.css'
 
 function App() {
   const [socket, setSocket] = useState(null)
-  const [message, setMessage] = useState([])
-  const [conversations, setConversations] = useState('')
+  const [messages, setMessages] = useState([])
+  const [inputText, setInputText] = useState('')
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (message.trim()) {
-      setConversations([...conversations, { text: message, sender: 'user' }])
-      
-      socket.emit('ai-message', message)
+  const handleSendMessage=()=>{
+    if(inputText.trim() === '') return
 
-      setMessage('')
+    const newMessage = {
+      id: Date.now(),
+      text: inputText,
+      timestamp: new Date().toLocaleTimeString(),
+      sender: 'user'
+    }
+
+    setMessages([...message, newMessage])
+    setInputText('')
+
+    // setTimeout(() => {
+    //   const botMessage = {
+    //     id:Date.now()+1,
+    //     text: generateBotResponse(),
+    //     timestamp: new Date().toLocaleTimeString(),
+    //   sender: 'bot'
+    //   }
+    //   setMessages(prevMessages => [...prevMessages, botMessage])
+    // }, 1000)
+  }
+
+
+
+  const handleInputChange =(e)=>{
+    setInputText(e.target.value)
+  }
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {  
+      handleSendMessage()
     }
   }
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+  //   if (message.trim()) {
+  //     setinputText([...inputText, { text: message, sender: 'user' }])
+      
+  //     socket.emit('ai-message', message)
+
+  //     setMessage('')
+  //   }
+  // }
 
   useEffect(() => {
     let socketInstance = io("http://localhost:3000");
@@ -34,18 +70,20 @@ function App() {
       </div>
       
       <div className="chat-messages">
-        {conversations.map((msg, index) => (
-          <div 
-            key={index} 
-            className={`message ${msg.sender === 'user' ? 'user-message' : 'bot-message'}`}
-          >
-            <div className="message-content">
-              <div className="message-sender">{msg.sender === 'user' ? 'You' : 'ChatBot'}</div>
-              {msg.text}
-              <div className="message-time">{new Date().toLocaleTimeString([])}</div>
-            </div>
+        {messages.length === 0?(
+          <div className='no-messages'>
+            <p>Start a conversation...</p>
           </div>
-        ))}
+        ):(
+          messages.map((message) => (
+            <div className='message'>
+              <div key={message.id} className='message-content'>
+                  <span className='message-text'>{message.text}</span>
+                  <span className='message-timestamp'>{message.timestamp}</span>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       <form className="chat-input-form" onSubmit={handleSubmit}>
